@@ -4,12 +4,13 @@
 #
 Name     : pypi-sh
 Version  : 1.14.2
-Release  : 1
+Release  : 2
 URL      : https://files.pythonhosted.org/packages/80/39/ed280d183c322453e276a518605b2435f682342f2c3bcf63228404d36375/sh-1.14.2.tar.gz
 Source0  : https://files.pythonhosted.org/packages/80/39/ed280d183c322453e276a518605b2435f682342f2c3bcf63228404d36375/sh-1.14.2.tar.gz
 Summary  : Python subprocess replacement
 Group    : Development/Tools
 License  : MIT
+Requires: pypi-sh-license = %{version}-%{release}
 Requires: pypi-sh-python = %{version}-%{release}
 Requires: pypi-sh-python3 = %{version}-%{release}
 BuildRequires : buildreq-distutils3
@@ -18,6 +19,14 @@ BuildRequires : buildreq-distutils3
 .. image:: https://raw.githubusercontent.com/amoffat/sh/master/logo-230.png
 :target: https://amoffat.github.com/sh
 :alt: Logo
+
+%package license
+Summary: license components for the pypi-sh package.
+Group: Default
+
+%description license
+license components for the pypi-sh package.
+
 
 %package python
 Summary: python components for the pypi-sh package.
@@ -41,13 +50,16 @@ python3 components for the pypi-sh package.
 %prep
 %setup -q -n sh-1.14.2
 cd %{_builddir}/sh-1.14.2
+pushd ..
+cp -a sh-1.14.2 buildavx2
+popd
 
 %build
 export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1641522666
+export SOURCE_DATE_EPOCH=1656373447
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
@@ -59,16 +71,40 @@ export CXXFLAGS="$CXXFLAGS -O3 -ffat-lto-objects -flto=auto "
 export MAKEFLAGS=%{?_smp_mflags}
 python3 setup.py build
 
+pushd ../buildavx2/
+export CFLAGS="$CFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3 "
+export CXXFLAGS="$CXXFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3 "
+export FFLAGS="$FFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3 "
+export FCFLAGS="$FCFLAGS -m64 -march=x86-64-v3 "
+export LDFLAGS="$LDFLAGS -m64 -march=x86-64-v3 "
+python3 setup.py build
+
+popd
 %install
 export MAKEFLAGS=%{?_smp_mflags}
 rm -rf %{buildroot}
+mkdir -p %{buildroot}/usr/share/package-licenses/pypi-sh
+cp %{_builddir}/sh-1.14.2/LICENSE.txt %{buildroot}/usr/share/package-licenses/pypi-sh/a8565acf18ac68a976c4dab3bdb4cf75ea3eb7d0
 python3 -tt setup.py build  install --root=%{buildroot}
 echo ----[ mark ]----
 cat %{buildroot}/usr/lib/python3*/site-packages/*/requires.txt || :
 echo ----[ mark ]----
+pushd ../buildavx2/
+export CFLAGS="$CFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3 "
+export CXXFLAGS="$CXXFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3 "
+export FFLAGS="$FFLAGS -m64 -march=x86-64-v3 -Wl,-z,x86-64-v3 "
+export FCFLAGS="$FCFLAGS -m64 -march=x86-64-v3 "
+export LDFLAGS="$LDFLAGS -m64 -march=x86-64-v3 "
+python3 -tt setup.py build install --root=%{buildroot}-v3
+popd
+/usr/bin/elf-move.py avx2 %{buildroot}-v3 %{buildroot} %{buildroot}/usr/share/clear/filemap/filemap-%{name}
 
 %files
 %defattr(-,root,root,-)
+
+%files license
+%defattr(0644,root,root,0755)
+/usr/share/package-licenses/pypi-sh/a8565acf18ac68a976c4dab3bdb4cf75ea3eb7d0
 
 %files python
 %defattr(-,root,root,-)
