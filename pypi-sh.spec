@@ -4,10 +4,10 @@
 # Using build pattern: pyproject
 #
 Name     : pypi-sh
-Version  : 2.0.4
-Release  : 14
-URL      : https://files.pythonhosted.org/packages/f3/54/ea1fe5ab317a4d942c71d80df534343cf148739f716ca6224ebcec83cb10/sh-2.0.4.tar.gz
-Source0  : https://files.pythonhosted.org/packages/f3/54/ea1fe5ab317a4d942c71d80df534343cf148739f716ca6224ebcec83cb10/sh-2.0.4.tar.gz
+Version  : 2.0.5
+Release  : 15
+URL      : https://files.pythonhosted.org/packages/37/86/ece11098f49068b8e77a46b83bce8e539b9416cfc03f2fab287f92d7230f/sh-2.0.5.tar.gz
+Source0  : https://files.pythonhosted.org/packages/37/86/ece11098f49068b8e77a46b83bce8e539b9416cfc03f2fab287f92d7230f/sh-2.0.5.tar.gz
 Summary  : Python subprocess replacement
 Group    : Development/Tools
 License  : MIT
@@ -16,11 +16,6 @@ Requires: pypi-sh-python = %{version}-%{release}
 Requires: pypi-sh-python3 = %{version}-%{release}
 BuildRequires : buildreq-distutils3
 BuildRequires : pypi(poetry_core)
-BuildRequires : pypi(py)
-BuildRequires : pypi-pluggy
-BuildRequires : pypi-pytest
-BuildRequires : pypi-tox
-BuildRequires : pypi-virtualenv
 # Suppress stripping binaries
 %define __strip /bin/true
 %define debug_package %{nil}
@@ -58,10 +53,10 @@ python3 components for the pypi-sh package.
 
 
 %prep
-%setup -q -n sh-2.0.4
-cd %{_builddir}/sh-2.0.4
+%setup -q -n sh-2.0.5
+cd %{_builddir}/sh-2.0.5
 pushd ..
-cp -a sh-2.0.4 buildavx2
+cp -a sh-2.0.5 buildavx2
 popd
 
 %build
@@ -69,7 +64,7 @@ export http_proxy=http://127.0.0.1:9/
 export https_proxy=http://127.0.0.1:9/
 export no_proxy=localhost,127.0.0.1,0.0.0.0
 export LANG=C.UTF-8
-export SOURCE_DATE_EPOCH=1684175244
+export SOURCE_DATE_EPOCH=1691428805
 export GCC_IGNORE_WERROR=1
 export AR=gcc-ar
 export RANLIB=gcc-ranlib
