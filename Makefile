@@ -1,5 +1,5 @@
 PKG_NAME := pypi-sh
-URL = https://files.pythonhosted.org/packages/cd/51/7355831d8e1cee8348157d769ccda8a31ca9fa0548e7f93d87837d83866d/sh-2.0.6.tar.gz
+URL = https://files.pythonhosted.org/packages/14/7a/5148402146d360a6d15922814a3b065b52be3a5fe878a8834d3ce4e7d33f/sh-2.0.7.tar.gz
 ARCHIVES = 
 
 include ../common/Makefile.common
