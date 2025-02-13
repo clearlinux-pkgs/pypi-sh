@@ -7,7 +7,7 @@
 #
 Name     : pypi-sh
 Version  : 2.2.1
-Release  : 23
+Release  : 24
 URL      : https://files.pythonhosted.org/packages/bd/30/abf254f7b56ba7bcae938767e3ee0f54d220d931a35a8721de350b76dec5/sh-2.2.1.tar.gz
 Source0  : https://files.pythonhosted.org/packages/bd/30/abf254f7b56ba7bcae938767e3ee0f54d220d931a35a8721de350b76dec5/sh-2.2.1.tar.gz
 Summary  : Python subprocess replacement
